@@ -1,7 +1,7 @@
 FROM codercom/code-server:latest
 
 # Apply VS Code settings
-COPY settings.json .local/share/code-server/User/settings.json
+COPY settings.json /root/.local/share/code-server/User/settings.json
 COPY product.json /home/coder/product.json
 
 USER coder
@@ -34,5 +34,6 @@ RUN mkdir /home/coder/project
 RUN sudo apt-get install -y jq
 RUN jq -s '.[0] * .[1]' /home/coder/product.json /usr/lib/code-server/lib/vscode/product.json > /tmp/product.json
 RUN mv /tmp/product.json /usr/lib/code-server/lib/vscode/product.json
+RUN rm /home/coder/product.json
 
 ENTRYPOINT ["/usr/bin/azure-entrypoint.sh"]
