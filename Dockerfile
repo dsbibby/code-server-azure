@@ -4,6 +4,7 @@ USER coder
 
 # Apply VS Code settings
 COPY settings.json .local/share/code-server/User/settings.json
+COPY product.json /home/coder/product.json
 
 # Use bash shell
 ENV SHELL=/bin/bash
@@ -28,5 +29,10 @@ RUN chown -R coder:coder /home/coder
 # Fix SSH bug
 RUN mkdir -p /var/run/sshd
 RUN mkdir /home/coder/project
+
+# Add OpenVSX Extension Gallery
+RUN sudo apt-get install -y jq
+RUN jq -s '.[0] * .[1]' /home/coder/product.json /usr/lib/code-server/lib/vscode/product.json > /tmp/product.json
+RUN mv /tmp/product.json /usr/lib/code-server/lib/vscode/product.json
 
 ENTRYPOINT ["/usr/bin/azure-entrypoint.sh"]
