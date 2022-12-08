@@ -1,10 +1,10 @@
 FROM codercom/code-server:latest
 
-USER coder
-
 # Apply VS Code settings
 COPY settings.json .local/share/code-server/User/settings.json
 COPY product.json /home/coder/product.json
+
+USER coder
 
 # Use bash shell
 ENV SHELL=/bin/bash
